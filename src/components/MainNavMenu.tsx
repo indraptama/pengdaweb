@@ -62,7 +62,7 @@ export const MainNavMenu: React.FC<Props> = ({ dataMenu }) => {
             <NavigationMenuList>
                 {
                     dataMenu.map((dataMenu, idx) => (
-                        <MenuItem title={dataMenu.title} href={dataMenu.href} subMenu={dataMenu.subMenu} />
+                        <MenuItem title={dataMenu.title} href={dataMenu.href} subMenu={dataMenu.subMenu} key={idx}/>
                     ))
                 }
             </NavigationMenuList>

@@ -3,12 +3,17 @@ import Base from "@/layouts/base.astro";
 
 import { getCollection } from "astro:content";
 
+// Astro Components
+import { Image } from "astro:assets";
 import NewsThumbnail from "@/components/NewsThumbnail.astro";
 import NewsThumbnailTwo from "@/components/NewsThumbnailTwo.astro";
 import NewsThumbnailThree from "@/components/NewsThumbnailThree.astro";
 import PostListItemTwo from "@/components/PostListItemTwo.astro";
 import SectionTitle from "@/components/SectionTitle.astro";
 import ArticleHeader from "@/components/ArticleHeader.astro";
+
+// React Componets
+import { GalleryItem } from "@/components/GalleryItem";
 
 // Content
 // List Berita
@@ -48,12 +53,12 @@ const newsThumbSize = (position: number) =>
 
 const articleLayout = (position: number) =>
     position === 0
-        ? "col-span-3  border-b lg:border-b-0 pb-4 lg:pb-8"
-        : "col-span-1 border-b lg:border-b-0 lg:border-r last:border-0  py-4 lg:pb-8 lg:px-4";
+        ? "col-span-3  border-b pb-4 lg:pb-8"
+        : "col-span-1 border-b lg:border-b-0 lg:border-r last:border-0  py-4 lg:pb-8 lg:px-8";
 ---
 
 <Base title="Beranda">
-    <div class="container lg:flex gap-4">
+    <div class="container lg:border-x lg:flex gap-4">
         <div class="lg:w-3/4">
             <SectionTitle title="berita terkini" href="/berita/" />
             <ul
@@ -65,9 +70,11 @@ const articleLayout = (position: number) =>
                             <NewsThumbnailTwo
                                 title={post.data.title}
                                 image={post.data.image}
-                                summary={idx === 0 ? post.data.summary : undefined}
+                                summary={
+                                    idx === 0 ? post.data.summary : undefined
+                                }
                                 href={`/berita/${post.slug}`}
-                                headline={idx === 0 }
+                                headline={idx === 0}
                                 postDate={post.data.postDate}
                             />
                         </li>
@@ -88,6 +95,7 @@ const articleLayout = (position: number) =>
                                     image={post.data.image}
                                     href={`/pengumuman/${post.slug}`}
                                     size="sm"
+                                    postDate={post.data.postDate}
                                 />
                             </div>
                         </li>
@@ -96,8 +104,10 @@ const articleLayout = (position: number) =>
             </ul>
         </div>
     </div>
-    <div class="container border-t">
-        <SectionTitle title="Artikel" href="/artikel/" />
+    <div class="container lg:px-0 border-t lg:border-x">
+        <div class="lg:px-8 lg:border-t mt-4">
+            <SectionTitle title="Artikel" href="/artikel/" />
+        </div>
         <ul class="lg:grid grid-cols-3 grid-rows-1">
             {
                 artikelPosts.map((post, idx) => (
@@ -110,6 +120,42 @@ const articleLayout = (position: number) =>
                             href={post.slug}
                             size={idx === 0 ? "lg" : "normal"}
                         />
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+    <div class="container lg:px-0 border-t lg:border-x pb-8">
+        <div class="lg:px-8 lg:border-t mt-4">
+            <SectionTitle title="Galeri" href="/artikel/" />
+        </div>
+        <ul class="lg:px-8 grid grid-cols-3 gap-2">
+            {
+                lastGaleri.map((post, idx) => (
+                    <li class="mb-0 w-full overflow-hidden aspect-square lg:aspect-[16/10]">
+                        <GalleryItem
+                            client:load
+                            title={post.data.title}
+                            caption={post.data.caption}
+                            size={post.data.imgSrc.width}
+                        >
+                            <div slot="thumbnail">
+                                <Image
+                                    src={post.data.imgSrc}
+                                    alt={post.data.title}
+                                    widths={[256, 480]}
+                                    sizes={`(max-width: 720px) 256px, (min-width:720px) 480px`}
+                                />
+                            </div>
+                            <div slot="theImage">
+                                <Image
+                                    class="rounded w-auto h-full"
+                                    src={post.data.imgSrc}
+                                    alt={post.data.title}
+                                    width={1280}
+                                />
+                            </div>
+                        </GalleryItem>
                     </li>
                 ))
             }

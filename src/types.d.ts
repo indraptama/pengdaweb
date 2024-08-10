@@ -9,3 +9,11 @@ export interface NavMenu {
     href: string
     subMenu?: Link[]
 }
+
+export interface galleryItem {
+    thumbnail: ReactNode
+    theImage: ReactNode
+    caption?: string
+    title?: string
+    size?: number
+}

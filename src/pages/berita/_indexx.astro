@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import React, { useState } from 'react';
+
+import Base from "@/layouts/base.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+
+// Components
+import PostListItem from "@/components/PostListItemTwo.astro";
+import { Button } from "@/components/ui/button"
+
+const allPosts = await getCollection("berita");
+const posts = allPosts.sort((a,b) => (b.data.postDate.getTime()) - (a.data.postDate.getTime()) )
+
+const postsPerPage = 1;
+const [visiblePosts, setVisiblePosts] = useState(postsPerPage);
+
+const loadMorePosts = () => {
+  setVisiblePosts(prevVisiblePosts => prevVisiblePosts + postsPerPage);
+};
+
+const displayedPosts = posts.slice(0, visiblePosts);
+
+
+---
+
+<Base title="Berita Pengurus Daerah Kabupaten Garut Ikatan Notaris Indonesia">
+    <div class="max-w-5xl mx-auto px-8 mt-6 lg:mt-16">
+        <SectionTitle title="Berita Pengda" />
+        <ul>
+            {
+                displayedPosts.map((post) => (
+                    <li class="py-8 last:mb-0 border-b last:border-none">
+                        <PostListItem
+                            title={post.data.title}
+                            image={post.data.image}
+                            summary={post.data.summary}
+                            href={`/berita/${post.slug}`}
+                            postDate={post.data.postDate}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+        <div class="text-center mt-8 mb-16">
+            <Button variant={'outline'} className="w-96 max-w-full" onClick={loadMorePosts}>Selanjutnya</Button>
+        </div>
+    </div>
+</Base>

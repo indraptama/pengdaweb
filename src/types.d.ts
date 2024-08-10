@@ -1,3 +1,6 @@
+import type { ImageMetadata } from "astro"
+import type { CollectionConfig } from "astro:content"
+
 interface Link {
     title: string
     href: string
@@ -16,4 +19,15 @@ export interface galleryItem {
     caption?: string
     title?: string
     size?: number
+}
+
+export interface Post {
+    title: string,
+    postDate: string | Date | number;
+    author?: string,
+    image?: ImageMetadata,
+    draft?: boolean,
+    summary?: string,
+    tags?: string[],
+    href: string;
 }

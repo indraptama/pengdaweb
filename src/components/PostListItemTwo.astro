@@ -33,9 +33,11 @@ const textSize = (size: Props["size"]) => {
 };
 
 const { postDate, href, title, image, summary, author = 'Redaksi', size = "normal" } = Astro.props;
+
+
 ---
 
-<div class={`${size === "sm" ? "flex" : ""} lg:flex flex-row-reverse justify-between gap-4`}>
+<div class={`${size === "sm" ? "flex gap-4" : "gap-8"} lg:flex flex-row-reverse justify-between`}>
     {
         image ? (
             <div class={textSize(size).thumbnailSize}>

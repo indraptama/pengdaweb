@@ -5,12 +5,9 @@ import { getCollection } from "astro:content";
 
 // Astro Components
 import { Image } from "astro:assets";
-import NewsThumbnail from "@/components/NewsThumbnail.astro";
-import NewsThumbnailTwo from "@/components/NewsThumbnailTwo.astro";
-import NewsThumbnailThree from "@/components/NewsThumbnailThree.astro";
 import PostListItemTwo from "@/components/PostListItemTwo.astro";
 import SectionTitle from "@/components/SectionTitle.astro";
-import ArticleHeader from "@/components/ArticleHeader.astro";
+import HomePostList from "@/components/HomePostList.astro";
 
 // React Componets
 import { GalleryItem } from "@/components/GalleryItem";
@@ -67,14 +64,14 @@ const articleLayout = (position: number) =>
                 {
                     latestBeritaPost.map((post, idx) => (
                         <li class={newsThumbSize(idx)}>
-                            <NewsThumbnailTwo
+                            <HomePostList
                                 title={post.data.title}
                                 image={post.data.image}
                                 summary={
                                     idx === 0 ? post.data.summary : undefined
                                 }
                                 href={`/berita/${post.slug}`}
-                                headline={idx === 0}
+                                leading={idx === 0 }
                                 postDate={post.data.postDate}
                             />
                         </li>
@@ -112,13 +109,13 @@ const articleLayout = (position: number) =>
             {
                 artikelPosts.map((post, idx) => (
                     <li class={articleLayout(idx)}>
-                        <ArticleHeader
+                        <HomePostList
                             title={post.data.title}
                             postDate={post.data.postDate}
                             author={post.data.author}
                             summary={idx === 0 ? post.data.summary : undefined}
                             href={post.slug}
-                            size={idx === 0 ? "lg" : "normal"}
+                            leading={idx === 0}
                         />
                     </li>
                 ))

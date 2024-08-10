@@ -1,32 +1,32 @@
 ---
 import { getCollection } from "astro:content";
+import React, { useState } from 'react';
 
-import Layout from "@/layouts/Layout.astro";
+import Base from "@/layouts/base.astro";
 import SectionTitle from "@/components/SectionTitle.astro";
 
-// Components
-import PostListItem from "@/components/PostListItem.astro";
+// React
+import PostList from '@/components/react/PostList'
 
-const beritaPosts = await getCollection("berita");
+
+// Components
+
+
+const allPosts = await getCollection("berita");
+const posts = allPosts.sort((a,b) => (b.data.postDate.getTime()) - (a.data.postDate.getTime()) )
+
+
+
+
 ---
 
-<Layout title="Berita Pengurus Daerah Kabupaten Garut Ikatan Notaris Indonesia">
-    <div class="max-w-4xl mx-auto px-4 mb-4 mt-6 lg:mt-16">
+<Base title="Berita Pengurus Daerah Kabupaten Garut Ikatan Notaris Indonesia">
+    <div class="max-w-5xl mx-auto px-8 mt-6 lg:mt-16">
         <SectionTitle title="Berita Pengda" />
-        <ul>
-            {
-                beritaPosts.map((post) => (
-                    <li class="mb-4 border-b border-zinc-200 last:border-none pb-4">
-                        <PostListItem
-                            title={post.data.title}
-                            image={post.data.image}
-                            summary={post.data.summary}
-                            slug={`/berita/${post.slug}`}
-                            postDate={post.data.postDate}
-                        />
-                    </li>
-                ))
-            }
-        </ul>
+        <div>
+            <PostList postData={posts} client:load>
+                <div slot="theImage">kakak</div>
+            </PostList>
+        </div>
     </div>
-</Layout>
+</Base>

@@ -1,0 +1,106 @@
+---
+export const prerender = true
+
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+
+import Base from "@/layouts/base.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+
+// Components
+import PostListItem from "@/components/PostListItemTwo.astro";
+import { Button } from "@/components/ui/button"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
+// const beritaPosts = await getCollection("berita");
+
+export const getStaticPaths = (async({paginate}) => {
+    const allPosts = await getCollection("berita");
+    const posts = allPosts.sort((a,b) => (b.data.postDate.getTime()) - (a.data.postDate.getTime()) )
+    return paginate(posts, {pageSize: 1});
+}) satisfies GetStaticPaths;
+
+// const { slug } = Astro.params;
+// const page = beritaPosts.find((page) => page.slug === slug);
+// if (!page) return Astro.redirect("/404");
+// const { id, data, body } = page;
+
+// start: 0,
+//   end: 3,
+//   size: 5,
+//   total: 4,
+//   currentPage: 1,
+//   lastPage: 1,
+//   url: {
+//     current: '/berita',
+//     next: undefined,
+//     prev: undefined,
+//     first: undefined,
+//     last: undefined
+//   }
+const { page } = Astro.props;
+// const paginationList = Array.from({length: `${length}`}, (_, i) => i + 1);
+// const paginationList = Array.from({length: `${length}`}, (_, i) => i + 1);
+
+const paginationList = (length:number) => (Array.from({length:`${length}`}, (_,i) => i+ 1))
+---
+
+<Base title="Berita Pengurus Daerah Kabupaten Garut Ikatan Notaris Indonesia">
+    <div class="max-w-5xl mx-auto px-8 mt-6 lg:mt-16">
+        <SectionTitle title="Berita Pengda" />
+        <ul>
+            {
+                page.data.map((post) => (
+                    <li class="py-8 last:mb-0 border-b last:border-none">
+                        <PostListItem
+                            title={post.data.title}
+                            image={post.data.image}
+                            summary={post.data.summary}
+                            href={`/berita/${post.slug}`}
+                            postDate={post.data.postDate}
+                        />
+                    </li>
+                ))
+            }
+        </ul>
+        <div class="text-center mt-8 mb-16">
+            <Pagination>
+                <PaginationContent>
+                    {
+                        page.url.prev ? (
+                        <PaginationItem>
+                            <PaginationPrevious href={page.url.prev} />
+                        </PaginationItem>
+                        ):''
+                    }
+                    {
+                        paginationList(page.lastPage).map((pg,idx) => (
+                        <PaginationItem>
+                            <PaginationLink href={idx=== 0? 'berita/': `${pg}`}>{pg}</PaginationLink>
+                        </PaginationItem>
+                        ))
+                    }
+                  
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                  {
+                    page.url.next ? (
+                    <PaginationItem>
+                        <PaginationNext href={page.url.next} />
+                    </PaginationItem>
+                    ):''
+                }
+                </PaginationContent>
+              </Pagination>
+        </div>
+    </div>
+</Base>

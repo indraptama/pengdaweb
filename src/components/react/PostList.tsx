@@ -1,10 +1,6 @@
 import type { Post } from "@/types";
-import type { CollectionEntry } from "astro:content";
-
+import type { CollectionKey } from "astro:content";
 import { useState, type ReactNode } from 'react';
-import dayjs from 'dayjs'
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import "dayjs/locale/id";
 
 interface Collection {
     id: string;
@@ -12,37 +8,53 @@ interface Collection {
     body: string;
     collection: string;
     data: Post;
-    render: string;
+    render?: string;
 }
 
 interface Props {
     postData: Collection[];
-    theImage?: ReactNode
+    theImage?: ReactNode[];
+    image?: string;
+    link: string
 }
 
+// Components
+import { Button } from "@/components/ui/button"
 import PostListItem from '@/components/react/PostListItem';
 
-// Setup
-dayjs.extend(localizedFormat);
-dayjs.locale("id");
 
-
-
-const PostList: React.FC<Props> = ({ postData, theImage }) => {
+const PostList: React.FC<Props> = ({ postData, theImage, image, link }) => {
+    const postsPerPage = 5;
+    const [visiblePosts, setVisiblePosts] = useState(postsPerPage);
+    const loadMorePosts = () => {
+        setVisiblePosts(prevVisiblePosts => prevVisiblePosts + postsPerPage);
+    };
+    const allPostsLoaded = visiblePosts >= postData.length;
+    const displayedPosts = postData.slice(0, visiblePosts);
     return (
         <>
-            {
-                postData.map((post, idx) => (
-                    <PostListItem
-                        title={post.data.title}
-                        postDate={post.data.postDate}
-                        summary={post.data.summary}
-                        href={post.slug}
-                        theImage={theImage}
-                    >
-                    </PostListItem>
-                ))
-            }
+            <ul>
+                {
+                    displayedPosts.map((post, idx) => (
+                        <li className="py-8 last:mb-0 border-b last:border-none">
+                            <PostListItem
+                                title={post.data.title}
+                                postDate={post.data.postDate}
+                                summary={post.data.summary}
+                                href={`${link}/${post.slug}`}
+                                image={post.data.image}
+                            />
+                        </li>
+                    ))
+                }
+            </ul>
+            <div className="text-center mt-8 mb-16">
+                {
+                    !allPostsLoaded && (
+                        <Button variant={'outline'} className="w-96 max-w-full" onClick={loadMorePosts}>Selanjutnya</Button>
+                    )
+                }
+            </div>
         </>
     )
 }

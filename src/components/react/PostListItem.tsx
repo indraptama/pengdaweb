@@ -2,7 +2,7 @@ import type { Post } from "@/types";
 import type { ReactNode } from "react";
 
 interface Props extends Post {
-    theImage: ReactNode
+    theImage?: ReactNode
 }
 
 import dayjs from 'dayjs'
@@ -39,9 +39,6 @@ const PostListItem: React.FC<Props> = ({ title, image, href, summary, author, po
                 <div className="hidden lg:block">
                     <p className="line-clamp-3">{summary}</p>
                 </div>
-            </div>
-            <div>
-                {theImage}
             </div>
         </div>
     )

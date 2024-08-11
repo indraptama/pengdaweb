@@ -7,6 +7,7 @@ import SectionTitle from "@/components/SectionTitle.astro";
 
 // React
 import PostList from '@/components/react/PostList'
+import { Image } from "astro:assets";
 
 
 // Components
@@ -15,18 +16,13 @@ import PostList from '@/components/react/PostList'
 const allPosts = await getCollection("berita");
 const posts = allPosts.sort((a,b) => (b.data.postDate.getTime()) - (a.data.postDate.getTime()) )
 
-
-
-
 ---
 
 <Base title="Berita Pengurus Daerah Kabupaten Garut Ikatan Notaris Indonesia">
     <div class="max-w-5xl mx-auto px-8 mt-6 lg:mt-16">
         <SectionTitle title="Berita Pengda" />
         <div>
-            <PostList postData={posts} client:load>
-                <div slot="theImage">kakak</div>
-            </PostList>
+            <PostList postData={posts} client:load link='/berita'/>           
         </div>
     </div>
 </Base>

@@ -23,7 +23,7 @@ const PostListItem: React.FC<Props> = ({ title, image, href, summary, author, po
                 image ? (
                     <div className="mb-4 lg:mb-0 lg:w-1/3">
                         <div>
-                            <img src={image.src} alt={title} className="w-full aspect-[16/10] object-cover rounded" />
+                            <img src={image.src} alt={title} className="w-full aspect-[16/10] object-cover rounded" width={480}/>
                         </div>
                     </div>
                 ) : ''

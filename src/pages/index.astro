@@ -33,8 +33,6 @@ const allArtikelPosts = await getCollection("artikel");
 const artikelPosts = allArtikelPosts.sort(
     (a, b) => b.data.postDate.getTime() - a.data.postDate.getTime(),
 );
-const latestArticlePost = artikelPosts.slice(0, 1);
-const threeLastArticlePosts = artikelPosts.slice(1, 4);
 
 // List Gallery
 const allGaleriPosts = await getCollection("galeri"); // List photo
@@ -43,7 +41,7 @@ const galeriPosts = allGaleriPosts.sort(
 );
 const lastGaleri = galeriPosts.slice(0, 3);
 
-const newsThumbSize = (position: number) =>
+const newsLayout = (position: number) =>
     position === 0
         ? "col-span-2 row-span-2 col-start-2 row-start-1 lg:border-l lg:pl-4 mb-8 border-b pb-6 lg:pb-0 lg:border-b-0"
         : "col-start-1 mb-6 border-b lg:pb-0 lg:border-b-0";
@@ -63,7 +61,7 @@ const articleLayout = (position: number) =>
             >
                 {
                     latestBeritaPost.map((post, idx) => (
-                        <li class={newsThumbSize(idx)}>
+                        <li class={newsLayout(idx)}>
                             <HomePostList
                                 title={post.data.title}
                                 image={post.data.image}
@@ -72,6 +70,7 @@ const articleLayout = (position: number) =>
                                 }
                                 href={`/berita/${post.slug}`}
                                 leading={idx === 0 }
+                                align={idx === 0 ? 'center': 'left'}
                                 postDate={post.data.postDate}
                             />
                         </li>
@@ -116,6 +115,7 @@ const articleLayout = (position: number) =>
                             summary={idx === 0 ? post.data.summary : undefined}
                             href={post.slug}
                             leading={idx === 0}
+                            align={idx === 0 ? 'center': 'left'}
                         />
                     </li>
                 ))

@@ -9,37 +9,49 @@ interface Props {
   summary?: string;
   author: string;
   leading?: boolean;
+  align?: 'left' | 'center' | 'right'
 }
 
 import { Image } from "astro:assets";
 
-const { postDate, href, title, image, summary, author, leading } =
+const { postDate, href, title, image, summary, author, leading, align } =
   Astro.props;
 
 const textSize = (leading: Props["leading"]) => {
   if (leading) {
     return {
       titleText:
-        "text-2xl lg:text-4xl text-center font-serif mt-2 mb-2 lg:mt-2 font-normal",
+        "text-2xl lg:text-5xl mt-2 mb-2 lg:mt-2 font-normal font-serif",
     };
   }
   return {
-    titleText: "text-xl text-center font-serif mt-2 mb-2 lg:mt-2 font-normal",
+    titleText: "text-xl mt-2 mb-2 lg:mt-2 font-normal font-serif leading-tight",
   };
 };
+
+const textAlign = (agln:Props['align']) => {
+  if (agln === 'center') {
+    return ('text-center')
+  }
+  if (agln === 'right') {
+    return ('text-right')
+  }
+  return ('text-left')
+}
+
 ---
 
 <div class="max-w-[72ch] mx-auto">
   {
     image ? (
       <div class="mb-4">
-        <a href={href}>
+        <a href={href} class="block w-full aspect-[16/10] object-cover rounded-lg overflow-hidden">
           <Image
             src={image}
             alt={`picture of ${title}`}
             widths={[1024, 480]}
             inferSize={true}
-            class="w-full aspect-[16/10] object-cover rounded"
+            class="w-full aspect-[16/10] object-cover rounded-lg hover:opacity-85 ease-out duration-200"
           />
         </a>
       </div>
@@ -49,15 +61,15 @@ const textSize = (leading: Props["leading"]) => {
   }
   <Date
     time={postDate}
-    className={"mb-1 uppercase font-semibold text-muted-foreground text-xs text-center"}
+    className={`mb-1 uppercase font-semibold text-muted-foreground text-xs ${textAlign(align)}`}
   />
-  <h2 class={textSize(leading).titleText}>
+  <h2 class={`${textSize(leading).titleText} ${textAlign(align)}`}>
     <a href={href} class="hover:underline">{title}</a>
   </h2>
 
   {
     author ? (
-    <div class="text-center capitalize font-semibold text-sm text-muted-foreground mb-2">
+    <div class={`capitalize font-semibold text-sm text-muted-foreground mb-2 ${textAlign(align)}`}>
       Oleh : {author}
     </div>
     ): ''
@@ -65,7 +77,7 @@ const textSize = (leading: Props["leading"]) => {
   
   {
     leading ? (
-      <p class="line-clamp-3 lg:text-lg lg:text-center">{summary}</p>
+      <p class={`line-clamp-3 lg:line-clamp-5 lg:text-lg ${textAlign(align)}`}>{summary}</p>
     ) : (
       ""
     )

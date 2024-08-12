@@ -19,7 +19,6 @@ const beritaPosts = allBeritaPosts.sort(
     (a, b) => b.data.postDate.getTime() - a.data.postDate.getTime(),
 );
 const latestBeritaPost = beritaPosts.slice(0, 3);
-const threeLastBeritaPosts = beritaPosts.slice(1, 4);
 
 // List Pengumuman
 const allPengumumanPosts = await getCollection("pengumuman");

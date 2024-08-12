@@ -84,7 +84,7 @@ const paginationList = (length:number) => (Array.from({length:`${length}`}, (_,i
                     {
                         paginationList(page.lastPage).map((pg,idx) => (
                         <PaginationItem>
-                            <PaginationLink href={idx=== 0? 'berita/': `${pg}`}>{pg}</PaginationLink>
+                            <PaginationLink href={idx=== 0? 'artikel/': `artikel/${pg}`}>{pg}</PaginationLink>
                         </PaginationItem>
                         ))
                     }

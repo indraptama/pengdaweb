@@ -13,6 +13,64 @@ import Date from "@/components/Date.astro";
 
 const { image, author, title, postDate, summary } = Astro.props;
 ---
-<Base>
 
+<Base title={`Berita - ${title}`}>
+    {
+        image ? (
+            <div class="max-w-7xl mx-auto mb-8">
+                <Image
+                    src={image}
+                    alt="Image"
+                    widths={[1200, 480]}
+                    sizes={`(max-width: 480px) 480px, (max-width: 1024px) 1200px`}
+                    inferSize={true}
+                    class="aspect-[21/9] object-cover object-center w-full rounded"
+                />
+            </div>
+        ) : (
+            <div class="mt-16" />
+        )
+    }
+
+    <article class="max-w-7xl mx-auto px-4">
+        <div class="mb-8 flex flex-col items-center">
+            <p class="text-sm lg:text-md uppercase font-bold mb-2">
+                <Date time={postDate} />
+            </p>
+            <h1
+                class="text-2xl lg:text-5xl leading-normal text-center mb-2 max-w-4xl mx-auto font-serif font-bolds"
+            >
+                {title}
+            </h1>
+            <p class="text-zinc-500 mb-4">oleh : {author}</p>
+
+            {
+                summary ? (
+                    <div class="text-lg lg:text-xl w-full mb-8 mx-auto">
+                        <p class="max-w-5xl mx-auto leading-relaxed">
+                            {summary}
+                        </p>
+                    </div>
+                ) : (
+                    <div />
+                )
+            }
+
+            <div class="lg:flex w-full justify-center gap-4">
+                <div class="">
+                    <div class="prose prose-zinc mb-8 lg:mb-16 mx-auto">
+                        <slot name="content" />
+                    </div>
+                </div>
+                <div class="lg:w-2/12">
+                    <aside class="border p-4">
+                        <h4 class="font-bold text-xs mb-4 capitalize lg:text-center">Postingan Terkait</h4>
+                        <div class="text-sm">
+                            <slot name="content-aside"/>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </article>
 </Base>
